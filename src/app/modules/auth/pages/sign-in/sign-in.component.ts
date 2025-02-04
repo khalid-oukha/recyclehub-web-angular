@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from "../../../../core/services/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {User} from "../../../../models/User";
 
 @Component({
   selector: 'app-sign-in',
@@ -9,7 +10,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrl: './sign-in.component.scss'
 })
 export class SignInComponent {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   errorMessage: string = '';
 
   constructor(
@@ -23,23 +24,26 @@ export class SignInComponent {
     });
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.loginForm.invalid) {
       return;
     }
 
-    const formData = this.loginForm.value;
-    const credentials = {
-      email: formData.email,
-      password: formData.password
-    };
+    const credentials = this.loginForm.value;
 
-    const success = this.authService.login(credentials);
-
-    if (success) {
-      this.router.navigate(['/']).then(r => true);
-    } else {
-      this.errorMessage = 'Invalid credentials, please try again.';
-    }
+    this.authService.login(credentials).subscribe({
+      next: (user: User) => {
+        console.log("Logged in user:", user);
+        this.router.navigate(['/']).then(r => {
+          if (!r) {
+            console.error("Navigation failed");
+          }
+        });
+      },
+      error: (error: Error) => {
+        this.errorMessage = error.message;
+        console.error("Login error:", error);
+      }
+    });
   }
 }

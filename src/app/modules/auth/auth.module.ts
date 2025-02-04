@@ -6,6 +6,7 @@ import {AuthComponent} from "./auth.component";
 import {SignUpComponent} from "./pages/sign-up/sign-up.component";
 import {SignInComponent} from "./pages/sign-in/sign-in.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     CommonModule,
     AuthRoutingModule,
     NgOptimizedImage,
+    HttpClientModule,
     ReactiveFormsModule
   ]
 })
