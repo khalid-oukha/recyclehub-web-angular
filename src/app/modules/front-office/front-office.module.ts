@@ -4,15 +4,17 @@ import {CommonModule} from '@angular/common';
 import {FrontOfficeRoutingModule} from './front-office-routing.module';
 import {FrontOfficeComponent} from './front-office.component';
 import {SharedModule} from "../../shared/shared.module";
-import { ProfileComponent } from './profile/profile.component';
-import { HeroSectionComponent } from './hero-section/hero-section.component';
+import {ProfileComponent} from './pages/profile/profile.component';
+import {HeroSectionComponent} from './pages/hero-section/hero-section.component';
+import {CollectionRequestComponent} from './pages/collection-request/collection-request.component';
 
 
 @NgModule({
   declarations: [
     FrontOfficeComponent,
     ProfileComponent,
-    HeroSectionComponent
+    HeroSectionComponent,
+    CollectionRequestComponent
   ],
   imports: [
     CommonModule,

@@ -1,12 +1,15 @@
+import {RequestStatus} from "./RequestStatus";
+import {WasteType} from "./WasteType";
+
 export interface CollectionRequest {
-  id?: number;
-  wasteTypes: string[];
+  id: string;
+  userId: string;
+  wasteTypes: WasteType[];
   photos?: string[];
-  estimateWeight: number;
+  estimatedWeight: number;
   address: string;
-  date: Date;
-  timeSlot: string;
-  notes?: string;
-  status: string;
-  individualId: number;
+  preferredDate: string;
+  preferredTimeSlot: string;
+  additionalNotes?: string;
+  status: RequestStatus;
 }
