@@ -1,1 +1,39 @@
-<p>sign-up works!</p>
+<form class="mx-auto max-w-lg">
+  <div class="grid grid-cols-2 gap-4">
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="email" placeholder="Adresse e-mail" name="email" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="password" placeholder="Mot de passe" name="password" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="text" placeholder="Nom" name="firstName" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="text" placeholder="Prénom" name="lastName" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="text" placeholder="Rue" name="street" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="text" placeholder="Ville" name="city" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="text" placeholder="Code postal" name="postalCode" required/>
+    <input
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+      type="tel" placeholder="Numéro de téléphone" name="phone" required/>
+  </div>
+  <input
+    class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+    type="date" name="birthday" required/>
+  <input
+    class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+    type="file" name="profilePhoto" accept="image/*"/>
+  <button
+    class="mt-5 tracking-wide font-semibold bg-green-600 text-white w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+    type="submit">
+    <span class="ml-2">S'inscrire</span>
+  </button>
+</form>

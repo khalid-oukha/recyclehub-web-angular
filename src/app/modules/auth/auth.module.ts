@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
-import { AuthRoutingModule } from './auth-routing.module';
+import {AuthRoutingModule} from './auth-routing.module';
 import {AuthComponent} from "./auth.component";
 import {SignUpComponent} from "./pages/sign-up/sign-up.component";
 import {SignInComponent} from "./pages/sign-in/sign-in.component";
@@ -15,7 +15,9 @@ import {SignInComponent} from "./pages/sign-in/sign-in.component";
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    NgOptimizedImage
   ]
 })
-export class AuthModule { }
+export class AuthModule {
+}
