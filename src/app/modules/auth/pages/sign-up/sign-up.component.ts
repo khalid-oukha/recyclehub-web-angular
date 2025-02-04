@@ -37,7 +37,17 @@ export class SignUpComponent {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageData = reader.result as string;
+        localStorage.setItem('profilePhoto', imageData);
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
+
 
   async onSubmit() {
     if (this.signupForm.invalid) {
@@ -57,15 +67,13 @@ export class SignUpComponent {
       },
       phone: formData.phone,
       birthday: formData.birthday,
-      isCollector: formData.isCollector
+      isCollector: formData.isCollector,
+      profilePhoto: localStorage.getItem('profilePhoto')
     };
 
-    const success = await this.authService.signUp(user, this.selectedFile);
+    localStorage.setItem('user', JSON.stringify(user));
 
-    if (success) {
-      this.router.navigate(['/auth/sign-in']).then(r => true);
-    } else {
-      this.errorMessage = 'Cet email est déjà utilisé.';
-    }
+    this.router.navigate(['/profile']);
   }
+
 }

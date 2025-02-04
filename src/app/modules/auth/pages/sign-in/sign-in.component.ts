@@ -19,7 +19,7 @@ export class SignInComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -31,14 +31,13 @@ export class SignInComponent {
     const formData = this.loginForm.value;
     const credentials = {
       email: formData.email,
-      password: formData.password,
+      password: formData.password
     };
 
     const success = this.authService.login(credentials);
 
     if (success) {
-      this.router.navigate(['/profile']).then(() => {
-      });
+      this.router.navigate(['/']).then(r => true);
     } else {
       this.errorMessage = 'Invalid credentials, please try again.';
     }

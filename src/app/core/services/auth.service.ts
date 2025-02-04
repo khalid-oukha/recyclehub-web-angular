@@ -37,7 +37,7 @@ export class AuthService {
     };
 
     users.push(newUser);
-    localStorage.setItem(this.localStorageKey, JSON.stringify(users)); // Save all users
+    localStorage.setItem(this.localStorageKey, JSON.stringify(users));
     return true;
   }
 
@@ -50,14 +50,12 @@ export class AuthService {
     });
   }
 
-  login(credentials: { email: string; password: string }): boolean {
+  login(credentials: { email: string, password: string }): boolean {
     let users: User[] = JSON.parse(localStorage.getItem(this.localStorageKey) || '[]');
-    let user = users.find(
-      (u) => u.email === credentials.email && u.password === credentials.password
-    );
+    let user = users.find((u) => u.email === credentials.email && u.password === credentials.password);
 
     if (user) {
-      localStorage.setItem(this.sessionKey, JSON.stringify(user)); // Store current user
+      localStorage.setItem(this.sessionKey, JSON.stringify(user));
       return true;
     }
 

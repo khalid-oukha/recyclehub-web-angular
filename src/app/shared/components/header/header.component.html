@@ -1,0 +1,70 @@
+<header class="bg-white shadow-sm">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+
+      <!-- Logo Component -->
+      <app-logo [imageSize]="'w-16'" [textSize]="'text-xl'" [logoSrc]="'./assets/bandeau.jpg'"
+                [logoAlt]="'RecycleHub Logo'"></app-logo>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex space-x-8">
+        <!-- Home Link -->
+        <a routerLink="/" class="text-neutral-dark hover:text-primary font-medium transition-colors">
+          Home
+        </a>
+
+        <!-- Profile Link -->
+        <a routerLink="/profile" class="text-neutral-dark hover:text-primary font-medium transition-colors">
+          Profile
+        </a>
+
+        <!-- Request Collection Link -->
+        <a routerLink="/request" class="text-neutral-dark hover:text-primary font-medium transition-colors">
+          Request Collection
+        </a>
+
+        <!-- About Link -->
+        <a routerLink="/about" class="text-neutral-dark hover:text-primary font-medium transition-colors">
+          About
+        </a>
+      </nav>
+
+      <div class="flex items-center space-x-4">
+        <button routerLink="auth"
+                class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium transition-colors">
+          Login
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button class="lg:hidden p-2 rounded-md text-neutral-dark hover:text-primary"
+                (click)="isMobileMenuOpen = !isMobileMenuOpen">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="lg:hidden" [class.hidden]="!isMobileMenuOpen">
+      <div class="pt-2 pb-4 space-y-4">
+        <a routerLink="/" class="block px-3 py-2 text-neutral-dark hover:text-primary font-medium">Home</a>
+
+        <a routerLink="/profile" class="block px-3 py-2 text-neutral-dark hover:text-primary font-medium">Profile</a>
+
+        <a routerLink="/request" class="block px-3 py-2 text-neutral-dark hover:text-primary font-medium">
+          Request Collection
+        </a>
+
+        <a routerLink="/about" class="block px-3 py-2 text-neutral-dark hover:text-primary font-medium">About</a>
+
+        <!-- Login / Sign Up Button -->
+        <button
+          class="w-full bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium transition-colors">
+          Login
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
