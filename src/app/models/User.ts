@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
   password: string;
   firstName: string;
@@ -13,5 +13,5 @@ export interface User {
   birthday: Date;
   profilePhoto?: string;
   isCollector: boolean;
-  points:number;
+  points: number;
 }

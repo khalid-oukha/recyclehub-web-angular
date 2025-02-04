@@ -1,36 +1,127 @@
-<form class="mx-auto max-w-lg">
+<form [formGroup]="signupForm" (submit)="onSubmit()" class="mx-auto max-w-lg">
   <div class="grid grid-cols-2 gap-4">
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="email" placeholder="Adresse e-mail" name="email" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="password" placeholder="Mot de passe" name="password" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="text" placeholder="Nom" name="firstName" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="text" placeholder="Prénom" name="lastName" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="text" placeholder="Rue" name="street" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="text" placeholder="Ville" name="city" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="text" placeholder="Code postal" name="postalCode" required/>
-    <input
-      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-      type="tel" placeholder="Numéro de téléphone" name="phone" required/>
+    <div class="relative my-2">
+      <input
+        formControlName="email"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="email" placeholder="Adresse e-mail" name="email" required
+      />
+      <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('email')?.errors?.['required']">Email is required.</div>
+        <div *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="password"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="password" placeholder="Mot de passe" name="password" required
+      />
+      <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('password')?.errors?.['required']">Password is required.</div>
+        <div *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.
+        </div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="firstName"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="text" placeholder="Nom" name="firstName" required
+      />
+      <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('firstName')?.errors?.['required']">First name is required.</div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="lastName"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="text" placeholder="Prénom" name="lastName" required
+      />
+      <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('lastName')?.errors?.['required']">Last name is required.</div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="street"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="text" placeholder="Rue" name="street" required
+      />
+      <div *ngIf="signupForm.get('street')?.invalid && signupForm.get('street')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('street')?.errors?.['required']">Street is required.</div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="city"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="text" placeholder="Ville" name="city" required
+      />
+      <div *ngIf="signupForm.get('city')?.invalid && signupForm.get('city')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('city')?.errors?.['required']">City is required.</div>
+      </div>
+    </div>
+
+    <div class="relative my-2">
+      <input
+        formControlName="postalCode"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="text" placeholder="Code postal" name="postalCode" required
+      />
+      <div *ngIf="signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('postalCode')?.errors?.['required']">Postal code is required.</div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <input
+        formControlName="phone"
+        class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+        type="tel" placeholder="Numéro de téléphone" name="phone" required
+      />
+      <div *ngIf="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched"
+           class="absolute left-0 text-red-500 text-xs mt-1">
+        <div *ngIf="signupForm.get('phone')?.errors?.['required']">Phone number is required.</div>
+        <div *ngIf="signupForm.get('phone')?.errors?.['pattern']">Please enter a valid 10-digit phone number.</div>
+      </div>
+    </div>
+
   </div>
-  <input
-    class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-    type="date" name="birthday" required/>
-  <input
-    class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-    type="file" name="profilePhoto" accept="image/*"/>
+
+  <div class="relative my-2">
+    <input
+      formControlName="birthday"
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+      type="date" name="birthday" required
+    />
+    <div *ngIf="signupForm.get('birthday')?.invalid && signupForm.get('birthday')?.touched"
+         class="absolute left-0 text-red-500 text-xs mt-1">
+      <div *ngIf="signupForm.get('birthday')?.errors?.['required']">Birthday is required.</div>
+    </div>
+  </div>
+
+  <div class="relative my-2">
+    <input
+      formControlName="profilePhoto"
+      class="w-full px-8 py-4 rounded-lg bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+      type="file" name="profilePhoto" accept="image/*"
+    />
+  </div>
+
   <button
     class="mt-5 tracking-wide font-semibold bg-green-600 text-white w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
     type="submit">
