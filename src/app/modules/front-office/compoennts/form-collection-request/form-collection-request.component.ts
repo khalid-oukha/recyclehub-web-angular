@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-collection-request',
-  templateUrl: './collection-request.component.html',
-  styleUrl: './collection-request.component.scss'
+  selector: 'app-form-collection-request',
+  templateUrl: './form-collection-request.component.html',
+  styleUrl: './form-collection-request.component.scss'
 })
-export class CollectionRequestComponent implements OnInit {
+export class FormCollectionRequestComponent implements OnInit {
   requestForm!: FormGroup;
   wasteTypes = ['Plastique', 'Verre', 'Papier', 'Métal'];
   timeSlots = ['09:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00'];

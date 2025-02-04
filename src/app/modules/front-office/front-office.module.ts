@@ -7,6 +7,8 @@ import {SharedModule} from "../../shared/shared.module";
 import {ProfileComponent} from './pages/profile/profile.component';
 import {HeroSectionComponent} from './pages/hero-section/hero-section.component';
 import {CollectionRequestComponent} from './pages/collection-request/collection-request.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { FormCollectionRequestComponent } from './compoennts/form-collection-request/form-collection-request.component';
 
 
 @NgModule({
@@ -14,12 +16,14 @@ import {CollectionRequestComponent} from './pages/collection-request/collection-
     FrontOfficeComponent,
     ProfileComponent,
     HeroSectionComponent,
-    CollectionRequestComponent
+    CollectionRequestComponent,
+    FormCollectionRequestComponent
   ],
   imports: [
     CommonModule,
     FrontOfficeRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class FrontOfficeModule {

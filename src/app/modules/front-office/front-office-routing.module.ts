@@ -3,13 +3,22 @@ import {RouterModule, Routes} from '@angular/router';
 import {FrontOfficeComponent} from "./front-office.component";
 import {HeroSectionComponent} from "./pages/hero-section/hero-section.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
+import {CollectionRequestComponent} from "./pages/collection-request/collection-request.component";
+import {FormCollectionRequestComponent} from "./compoennts/form-collection-request/form-collection-request.component";
 
 const routes: Routes = [
   {
-    path: '', component: FrontOfficeComponent, children: [
+    path: '', component: FrontOfficeComponent,
+    children: [
       {path: 'home', component: HeroSectionComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: '**', redirectTo: 'home', pathMatch: 'full'},
+      {
+        path: 'request', component: CollectionRequestComponent,
+        children: [
+          {path: '', component: FormCollectionRequestComponent},
+        ]
+      },
+      {path: '**', redirectTo: 'home', pathMatch: 'full'}
     ]
   }
 ];
