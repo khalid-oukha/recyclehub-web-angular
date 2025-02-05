@@ -11,7 +11,7 @@ export class AuthService {
   private sessionKey = 'currentUser';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     this.initializeCurrentUserFromLocalStorage();
@@ -38,6 +38,7 @@ export class AuthService {
         localStorage.setItem(this.sessionKey, JSON.stringify(user));
         this.currentUserSubject.next(user);
       }),
+
       catchError((error) => {
         console.error('Login error:', error);
         return throwError(() => new Error('Invalid credentials'));
@@ -47,6 +48,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.sessionKey);
+    this.currentUserSubject.next(null);
     this.router.navigate(['/auth/sign-in']).then(r => true);
   }
 

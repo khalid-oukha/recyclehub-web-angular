@@ -10,14 +10,13 @@ import {FooterComponent} from './components/footer/footer.component';
   declarations: [
     HeaderComponent,
     LogoComponent,
-    LogoComponent,
     FooterComponent
   ],
   imports: [
     CommonModule,
     RouterLink
   ],
-  exports: [HeaderComponent, FooterComponent, LogoComponent, FooterComponent]
+  exports: [HeaderComponent, FooterComponent, LogoComponent]
 })
 export class SharedModule {
 }

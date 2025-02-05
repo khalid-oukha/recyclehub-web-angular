@@ -30,11 +30,15 @@
       </nav>
 
       <div class="flex items-center space-x-4">
-        <button routerLink="auth"
+        <button *ngIf="!isAuthenticated" routerLink="/auth/sign-in"
                 class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium transition-colors">
           Login
         </button>
 
+        <button *ngIf="true" (click)="logout()"
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+          Logout
+        </button>
         <!-- Mobile Menu Button -->
         <button class="lg:hidden p-2 rounded-md text-neutral-dark hover:text-primary"
                 (click)="isMobileMenuOpen = !isMobileMenuOpen">
@@ -59,11 +63,16 @@
 
         <a routerLink="/about" class="block px-3 py-2 text-neutral-dark hover:text-primary font-medium">About</a>
 
-        <!-- Login / Sign Up Button -->
-        <button
-          class="w-full bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium transition-colors">
+        <button *ngIf="!isAuthenticated" routerLink="/auth/sign-in"
+                class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium transition-colors">
           Login
         </button>
+
+        <button *ngIf="true" (click)="logout()"
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+          Logout
+        </button>
+
       </div>
     </div>
   </div>
