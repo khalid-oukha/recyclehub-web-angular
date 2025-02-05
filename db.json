@@ -20,52 +20,51 @@
   ],
   "collectionRequests": [
     {
-      "id": "1",
-      "userId": "user_101",
-      "wasteTypes": [
-        "PLASTIC",
-        "GLASS"
-      ],
-      "photos": [
-        "https://example.com/photo1.jpg",
-        "https://example.com/photo2.jpg"
-      ],
-      "estimatedWeight": 2000,
-      "address": "123 Main Street, Marrakech",
-      "preferredDate": "2025-02-05",
-      "preferredTimeSlot": "10:00-12:00",
-      "additionalNotes": "Please call before arriving",
-      "status": "PENDING"
-    },
-    {
-      "id": "2",
-      "userId": "user_102",
+      "id": "",
+      "userId": "yourUserId",
       "wasteTypes": [
         "PAPER"
       ],
       "photos": [],
-      "estimatedWeight": 1500,
-      "address": "456 Avenue Hassan II, Casablanca",
-      "preferredDate": "2025-02-06",
-      "preferredTimeSlot": "14:00-16:00",
-      "additionalNotes": "",
+      "estimatedWeight": 1001,
+      "address": "adadadada",
+      "preferredDate": "2025-02-14",
+      "preferredTimeSlot": "09:00 - 12:00",
+      "additionalNotes": "dadadadada",
       "status": "PENDING"
     },
     {
-      "id": "3",
-      "userId": "user_103",
+      "id": "",
+      "userId": "yourUserId",
       "wasteTypes": [
-        "METAL",
-        "PLASTIC"
+        "PAPER"
       ],
       "photos": [
-        "https://example.com/photo3.jpg"
+        "DALL·E 2024-12-06 15.06.32 - A professional and clean graphic representing a modern agricultural management system for lemon farming, showcasing a sleek and minimalistic design. T.webp"
       ],
-      "estimatedWeight": 3000,
-      "address": "789 Rue Mohammed V, Rabat",
-      "preferredDate": "2025-02-07",
-      "preferredTimeSlot": "09:00-11:00",
-      "additionalNotes": "Leave at front door",
+      "estimatedWeight": 1001,
+      "address": "dadadadadad",
+      "preferredDate": "2025-02-21",
+      "preferredTimeSlot": "09:00 - 12:00",
+      "additionalNotes": "adadadadadadadadadadadada",
+      "status": "PENDING"
+    },
+    {
+      "id": "",
+      "userId": "yourUserId",
+      "wasteTypes": [
+        "PLASTIC",
+        "GLASS",
+        "PAPER"
+      ],
+      "photos": [
+        "20210719_115748.jpg"
+      ],
+      "estimatedWeight": 1002,
+      "address": "dadadada",
+      "preferredDate": "2025-02-14",
+      "preferredTimeSlot": "09:00 - 12:00",
+      "additionalNotes": "dadadadadadadadada",
       "status": "PENDING"
     }
   ]

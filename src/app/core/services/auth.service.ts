@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from '../../models/User';
-import {catchError, map, Observable, of, switchMap, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, Observable, of, switchMap, tap, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -11,11 +11,23 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000';
   private sessionKey = 'currentUser';
 
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {
+    this.initializeCurrentUserFromLocalStorage();
   }
 
+
+  private initializeCurrentUserFromLocalStorage() {
+    const storedUser = localStorage.getItem(this.sessionKey);
+    const initialUser = storedUser ? JSON.parse(storedUser) : null;
+    this.currentUserSubject.next(initialUser);
+  }
+
+
   login(credentials: { email: string; password: string }): Observable<User> {
-    return this.http.get<User[]>(`${this.apiUrl}/users?email=${credentials.email}&password=${credentials.password}`).pipe( // Filter by email and password directly (for demonstration with JSON Server)
+    return this.http.get<User[]>(`${this.apiUrl}/users?email=${credentials.email}&password=${credentials.password}`).pipe(
       map((users: User[]) => {
         if (users.length === 1) {
           return users[0];
@@ -25,6 +37,7 @@ export class AuthService {
       }),
       tap((user: User) => {
         localStorage.setItem(this.sessionKey, JSON.stringify(user));
+        this.currentUserSubject.next(user);
       }),
       catchError((error) => {
         console.error('Login error:', error);
@@ -44,7 +57,7 @@ export class AuthService {
 
   getUserDetails(): Observable<User | null> {
     const user = JSON.parse(localStorage.getItem(this.sessionKey) || 'null');
-    return of(user); // Wrap in Observable
+    return of(user);
   }
 
   signUp(user: Omit<User, 'id' | 'points' | 'profilePhoto'>, profilePhoto?: File): Observable<User> {

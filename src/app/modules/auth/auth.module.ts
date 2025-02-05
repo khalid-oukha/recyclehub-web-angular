@@ -21,7 +21,7 @@ import {HttpClientModule} from "@angular/common/http";
     NgOptimizedImage,
     HttpClientModule,
     ReactiveFormsModule
-  ]
+  ],
 })
 export class AuthModule {
 }

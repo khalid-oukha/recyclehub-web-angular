@@ -1,10 +1,26 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {authGuard} from "./core/guards/auth.guard";
+import {isLoggedInGuard} from "./core/guards/isLogged-in.guard";
 
 const routes: Routes = [
-  {path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)},
-  {path: '', loadChildren: () => import('./modules/front-office/front-office.module').then(m => m.FrontOfficeModule)},
-  {path: '**', redirectTo: '', pathMatch: 'full'},
+  {
+    path: 'auth',
+    loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+    , canMatch: [isLoggedInGuard]
+  },
+
+  {
+    path: '',
+    loadChildren: () => import('./modules/front-office/front-office.module').then(m => m.FrontOfficeModule)
+    , canMatch: [authGuard]
+  },
+
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

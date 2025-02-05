@@ -22,6 +22,10 @@ export class CollectionRequestService {
     return this.http.get<CollectionRequest>(`${this.apiUrl}/${id}`);
   }
 
+  getByUserId(userId: Number): Observable<CollectionRequest[]> {
+    return this.http.get<CollectionRequest[]>(`${this.apiUrl}/${userId}`);
+  }
+
   create(CollectionRequest: CollectionRequest): Observable<CollectionRequest> {
     return this.http.post<CollectionRequest>(this.apiUrl, CollectionRequest);
   }
