@@ -11,7 +11,7 @@ export class CollectionRequestService {
   constructor(private http: HttpClient) {
   }
 
-  private apiUrl = 'http://localhost:3000/collectionRequests';
+  private apiUrl = '/collectionRequests';
 
 
   getAll(): Observable<CollectionRequest[]> {

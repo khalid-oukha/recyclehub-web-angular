@@ -8,7 +8,6 @@ import {HttpClient} from "@angular/common/http";
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000';
   private sessionKey = 'currentUser';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -27,7 +26,7 @@ export class AuthService {
 
 
   login(credentials: { email: string; password: string }): Observable<User> {
-    return this.http.get<User[]>(`${this.apiUrl}/users?email=${credentials.email}&password=${credentials.password}`).pipe(
+    return this.http.get<User[]>(`/users?email=${credentials.email}&password=${credentials.password}`).pipe(
       map((users: User[]) => {
         if (users.length === 1) {
           return users[0];
@@ -71,7 +70,7 @@ export class AuthService {
         };
         return newUser;
       }),
-      switchMap((newUser) => this.http.post<User>(`${this.apiUrl}/users`, newUser))
+      switchMap((newUser) => this.http.post<User>(`/users`, newUser))
     );
   }
 
