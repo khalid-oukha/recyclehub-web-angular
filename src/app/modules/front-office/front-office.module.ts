@@ -7,9 +7,10 @@ import {SharedModule} from "../../shared/shared.module";
 import {ProfileComponent} from './pages/profile/profile.component';
 import {HeroSectionComponent} from './pages/hero-section/hero-section.component';
 import {CollectionRequestComponent} from './pages/collection-request/collection-request.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FormCollectionRequestComponent} from './compoennts/form-collection-request/form-collection-request.component';
-import {EditProfileComponent} from './pages/edit-profile/edit-profile.component';
+import {EditProfileComponent} from "./pages/edit-profile/edit-profile.component";
+import {RequestViewComponent} from './compoennts/request-view/request-view.component';
 
 
 @NgModule({
@@ -20,12 +21,14 @@ import {EditProfileComponent} from './pages/edit-profile/edit-profile.component'
     CollectionRequestComponent,
     FormCollectionRequestComponent,
     EditProfileComponent,
+    RequestViewComponent,
   ],
   imports: [
     CommonModule,
     FrontOfficeRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class FrontOfficeModule {

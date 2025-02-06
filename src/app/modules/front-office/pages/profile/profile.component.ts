@@ -31,10 +31,6 @@ export class ProfileComponent implements OnInit {
       next: (user) => {
         this.user = user;
         this.isLoading = false;
-      },
-      error: (error) => {
-        console.error("Error fetching user details:", error);
-        this.isLoading = false;
       }
     });
   }
@@ -43,23 +39,17 @@ export class ProfileComponent implements OnInit {
     this.collectionRequestService.getByUserId(userId).subscribe({
       next: (requests) => {
         this.collectionRequests = requests;
-        console.log("user request", requests)
-      },
-      error: (error) => {
-        console.error("Error fetching collection requests:", error);
-        this.collectionRequests = [];
       }
     });
   }
 
 
   onDeleteAccount() {
-    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (confirm('Are you sure you want to delete your account?')) {
       this.isDeleting = true;
       this.userService.deleteAccount().subscribe({
         next: () => console.log('Account deleted successfully'),
         error: (err) => {
-          console.error(err);
           this.isDeleting = false;
         }
       });

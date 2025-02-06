@@ -6,6 +6,7 @@ import {ProfileComponent} from "./pages/profile/profile.component";
 import {CollectionRequestComponent} from "./pages/collection-request/collection-request.component";
 import {FormCollectionRequestComponent} from "./compoennts/form-collection-request/form-collection-request.component";
 import {EditProfileComponent} from "./pages/edit-profile/edit-profile.component";
+import {RequestViewComponent} from "./compoennts/request-view/request-view.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
             path: '',
             component: FormCollectionRequestComponent
           },
+          {
+            path: 'view',
+            component: RequestViewComponent,
+          }
         ]
       },
       {path: '**', redirectTo: 'home', pathMatch: 'full'}

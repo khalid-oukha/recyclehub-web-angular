@@ -91,5 +91,8 @@ export class AuthService {
     })
   }
 
-
+  updateCurrentUser(user: User): void {
+    localStorage.setItem(this.sessionKey, JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
 }

@@ -7,12 +7,10 @@ import {CollectionRequest} from "../../models/DemandeCollecte";
   providedIn: 'root'
 })
 export class CollectionRequestService {
+  private apiUrl = '/collectionRequests';
 
   constructor(private http: HttpClient) {
   }
-
-  private apiUrl = '/collectionRequests';
-
 
   getAll(): Observable<CollectionRequest[]> {
     return this.http.get<CollectionRequest[]>(this.apiUrl);
@@ -22,12 +20,16 @@ export class CollectionRequestService {
     return this.http.get<CollectionRequest>(`${this.apiUrl}/${id}`);
   }
 
-  getByUserId(userId: Number): Observable<CollectionRequest[]> {
-    return this.http.get<CollectionRequest[]>(`${this.apiUrl}/${userId}`);
+  getByUserId(userId: number): Observable<CollectionRequest[]> {
+    return this.http.get<CollectionRequest[]>(`${this.apiUrl}?userId=${userId}`);
   }
 
-  create(CollectionRequest: CollectionRequest): Observable<CollectionRequest> {
-    return this.http.post<CollectionRequest>(this.apiUrl, CollectionRequest);
+  getByUserIdAndStatus(userId: number, status: string): Observable<CollectionRequest[]> {
+    return this.http.get<CollectionRequest[]>(`${this.apiUrl}?userId=${userId}&status=${status}`);
+  }
+
+  create(request: CollectionRequest): Observable<CollectionRequest> {
+    return this.http.post<CollectionRequest>(this.apiUrl, request);
   }
 
   updateRequest(id: string, request: Partial<CollectionRequest>): Observable<CollectionRequest> {
