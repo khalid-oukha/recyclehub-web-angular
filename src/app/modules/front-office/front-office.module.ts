@@ -8,7 +8,8 @@ import {ProfileComponent} from './pages/profile/profile.component';
 import {HeroSectionComponent} from './pages/hero-section/hero-section.component';
 import {CollectionRequestComponent} from './pages/collection-request/collection-request.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { FormCollectionRequestComponent } from './compoennts/form-collection-request/form-collection-request.component';
+import {FormCollectionRequestComponent} from './compoennts/form-collection-request/form-collection-request.component';
+import {EditProfileComponent} from './pages/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormCollectionRequestComponent } from './compoennts/form-collection-req
     ProfileComponent,
     HeroSectionComponent,
     CollectionRequestComponent,
-    FormCollectionRequestComponent
+    FormCollectionRequestComponent,
+    EditProfileComponent,
   ],
   imports: [
     CommonModule,

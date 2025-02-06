@@ -5,17 +5,33 @@ import {HeroSectionComponent} from "./pages/hero-section/hero-section.component"
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {CollectionRequestComponent} from "./pages/collection-request/collection-request.component";
 import {FormCollectionRequestComponent} from "./compoennts/form-collection-request/form-collection-request.component";
+import {EditProfileComponent} from "./pages/edit-profile/edit-profile.component";
 
 const routes: Routes = [
   {
-    path: '', component: FrontOfficeComponent,
+    path: '',
+    component: FrontOfficeComponent,
     children: [
-      {path: 'home', component: HeroSectionComponent},
-      {path: 'profile', component: ProfileComponent},
       {
-        path: 'request', component: CollectionRequestComponent,
+        path: 'home',
+        component: HeroSectionComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
+        path: 'edit-profile',
+        component: EditProfileComponent
+      },
+      {
+        path: 'request',
+        component: CollectionRequestComponent,
         children: [
-          {path: '', component: FormCollectionRequestComponent},
+          {
+            path: '',
+            component: FormCollectionRequestComponent
+          },
         ]
       },
       {path: '**', redirectTo: 'home', pathMatch: 'full'}

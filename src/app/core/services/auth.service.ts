@@ -64,17 +64,17 @@ export class AuthService {
   signUp(user: Omit<User, 'id' | 'points' | 'profilePhoto'>, profilePhoto?: File): Observable<User> {
     return this.convertFileToBase64(profilePhoto).pipe(
       map((profilePhotoBase64) => {
-        const newUser: User = {
+        const newUser: Omit<User, 'id'> = {
           ...user,
           points: 0,
-          profilePhoto: profilePhotoBase64 || '',
-          id: 0
+          profilePhoto: profilePhotoBase64 || ''
         };
         return newUser;
       }),
-      switchMap((newUser) => this.http.post<User>(`/users`, newUser))
-    );
+      switchMap((newUser) => this.http.post<User>(`/users`, newUser)
+      ));
   }
+
 
   private convertFileToBase64(file: File | undefined): Observable<string | undefined> {
     return new Observable<string | undefined>((observer) => {
@@ -90,4 +90,6 @@ export class AuthService {
       }
     })
   }
+
+
 }
