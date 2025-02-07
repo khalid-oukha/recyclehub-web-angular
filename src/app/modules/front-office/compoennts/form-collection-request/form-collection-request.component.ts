@@ -134,7 +134,7 @@ export class FormCollectionRequestComponent implements OnInit {
     }));
 
     return {
-      userId: this.currentUser?.id ?? 0,
+      userId: this.currentUser?.id ?? '',
       wasteItems,
       photos: this.selectedFiles.map((file) => file.name),
       address: this.requestForm.value.address,

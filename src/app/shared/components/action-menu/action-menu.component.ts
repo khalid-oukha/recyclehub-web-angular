@@ -8,9 +8,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class ActionMenuComponent {
   isMenuOpen: boolean = false;
 
-  @Input() requestId!: number;
-  @Output() edit = new EventEmitter<number>();
-  @Output() delete = new EventEmitter<number>();
+  @Input() requestId!: string;
+  @Output() edit = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

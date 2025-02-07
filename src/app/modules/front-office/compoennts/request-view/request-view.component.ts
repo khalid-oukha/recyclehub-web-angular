@@ -35,11 +35,11 @@ export class RequestViewComponent implements OnInit {
     return wasteItems.reduce((total, item) => total + item.weight, 0);
   }
 
-  onEdit(id: number): void {
+  onEdit(id: string): void {
     console.log('Edit request for ID:', id);
   }
 
-  onDelete(id: number): void {
+  onDelete(id: string): void {
     console.log('Delete request for ID:', id);
   }
 }

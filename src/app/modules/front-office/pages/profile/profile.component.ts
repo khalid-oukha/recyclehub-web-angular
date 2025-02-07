@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  fetchCollectionRequests(userId: number) {
+  fetchCollectionRequests(userId: string) {
     this.collectionRequestService.getByUserId(userId).subscribe({
       next: (requests) => {
         this.collectionRequests = requests;

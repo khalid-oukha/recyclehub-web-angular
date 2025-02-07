@@ -1,0 +1,109 @@
+<header class="bg-white shadow-sm border-b-2 border-secondary-light">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo with Collector Badge -->
+      <div class="flex items-center space-x-3">
+        <img src="./assets/bandeau.jpg" alt="RecycleHub Logo" class="w-12 h-12 rounded-full border-2 border-secondary">
+        <div>
+          <span class="text-l font-bold text-primary-dark">RecycleHub</span>
+        </div>
+      </div>
+
+      <!-- Collector-specific Navigation -->
+      <nav class="hidden lg:flex space-x-8">
+        <a routerLink="/collector/requests"
+           class="text-neutral-dark hover:text-primary-dark font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Collection Requests
+        </a>
+
+        <a routerLink="/collector/schedule"
+           class="text-neutral-dark hover:text-primary-dark font-medium transition-colors flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Schedule
+        </a>
+
+        <a routerLink="/collector/profile"
+           class="text-neutral-dark hover:text-primary-dark font-medium transition-colors">
+          My Profile
+        </a>
+      </nav>
+
+      <!-- Collector Actions and Menu -->
+      <div class="flex items-center space-x-4">
+        <!-- Notifications -->
+        <button class="p-2 text-neutral-dark hover:text-primary-dark relative">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold
+                        leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-danger rounded-full">
+            3
+          </span>
+        </button>
+
+        <!-- Logout -->
+        <button (click)="logout()"
+                class="bg-primary-dark hover:bg-primary-dark-dark text-white px-6 py-2 rounded-lg font-medium transition-colors
+                       flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Logout
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="lg:hidden p-2 rounded-md text-neutral-dark hover:text-primary-dark"
+                (click)="isMobileMenuOpen = !isMobileMenuOpen">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="lg:hidden" [class.hidden]="!isMobileMenuOpen">
+      <div class="pt-2 pb-4 space-y-4 border-t border-neutral-light">
+        <a routerLink="/collector/requests"
+           class="block px-3 py-2 text-neutral-dark hover:text-primary-dark font-medium flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Collection Requests icon -->
+          </svg>
+          Requests
+        </a>
+
+        <a routerLink="/collector/schedule"
+           class="block px-3 py-2 text-neutral-dark hover:text-primary-dark font-medium flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Schedule icon -->
+          </svg>
+          Schedule
+        </a>
+
+        <a routerLink="/collector/profile"
+           class="block px-3 py-2 text-neutral-dark hover:text-primary-dark font-medium">
+          Profile
+        </a>
+
+        <button (click)="logout()"
+                class="w-full bg-primary-dark hover:bg-primary-dark-dark text-white px-6 py-2 rounded-lg font-medium
+                       transition-colors flex items-center justify-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Logout icon -->
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

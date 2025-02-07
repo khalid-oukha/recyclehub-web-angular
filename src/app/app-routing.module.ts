@@ -11,10 +11,17 @@ const routes: Routes = [
   },
 
   {
+    path: 'collector',
+    loadChildren: () => import('./modules/back-office/back-office.module').then(m => m.BackOfficeModule)
+    , canMatch: [authGuard]
+  },
+
+  {
     path: '',
     loadChildren: () => import('./modules/front-office/front-office.module').then(m => m.FrontOfficeModule)
     , canMatch: [authGuard]
   },
+
 
   {
     path: '**',

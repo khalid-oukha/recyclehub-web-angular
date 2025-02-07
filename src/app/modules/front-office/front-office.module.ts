@@ -24,9 +24,9 @@ import {RequestViewComponent} from './compoennts/request-view/request-view.compo
     RequestViewComponent,
   ],
   imports: [
+    SharedModule,
     CommonModule,
     FrontOfficeRoutingModule,
-    SharedModule,
     ReactiveFormsModule,
     FormsModule
   ]

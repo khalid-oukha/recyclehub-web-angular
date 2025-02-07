@@ -2,8 +2,8 @@ import {RequestStatus} from "./RequestStatus";
 import {WasteItem} from "./WasteItem";
 
 export interface CollectionRequest {
-  id?: number;
-  userId: number;
+  id?: string;
+  userId: string;
   wasteItems: WasteItem[];
   photos?: string[];
   address: string;

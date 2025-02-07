@@ -14,7 +14,7 @@ export class UserService {
   }
 
 
-  updateUser(userId: number, updatedUserData: Partial<User>): Observable<User> {
+  updateUser(userId: string, updatedUserData: Partial<User>): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${userId}`, updatedUserData).pipe(
       catchError(error => {
         return throwError(() => new Error('Failed to update user'));

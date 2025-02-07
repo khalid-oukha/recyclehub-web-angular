@@ -64,16 +64,11 @@ export class SignUpComponent {
 
     this.authService.signUp(user, this.selectedFile).subscribe({
       next: (newUser: User) => {
-        console.log('User created:', newUser);
         this.isLoading = false;
         this.router.navigate(['/auth/sign-in']).then(r => {
-          if (!r) {
-            console.error("Navigation failed");
-          }
         });
       },
       error: (error: any) => {
-        this.isLoading = false;
         this.errorMessage = error.message || 'An error occurred during signup.';
         console.error('Signup error:', error);
       }

@@ -44,29 +44,8 @@
       "preferredDate": "2025-02-26",
       "preferredTimeSlot": "09:00 - 12:00",
       "additionalNotes": "adadadadadadadada",
-      "status": "PENDING"
-    },
-    {
-      "id": "8971",
-      "userId": "8b80",
-      "wasteItems": [
-        {
-          "type": "PLASTIC",
-          "weight": 7.1,
-          "points": 14
-        },
-        {
-          "type": "GLASS",
-          "weight": 1,
-          "points": 1
-        }
-      ],
-      "photos": [],
-      "address": "Laudantium amet su",
-      "preferredDate": "2002-07-07",
-      "preferredTimeSlot": "12:00 - 15:00",
-      "additionalNotes": "Odio esse provident",
-      "status": "PENDING"
+      "status": "ACCEPTED",
+      "totalPoints": 16
     }
   ]
 }

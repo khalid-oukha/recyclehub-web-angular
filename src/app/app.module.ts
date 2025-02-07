@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiUrlInterceptor} from "./core/interceptors/api-url.interceptor";
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {ApiUrlInterceptor} from "./core/interceptors/api-url.interceptor";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ApiUrlInterceptor, multi: true},
