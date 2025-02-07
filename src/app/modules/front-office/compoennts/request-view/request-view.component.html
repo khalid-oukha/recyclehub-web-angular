@@ -33,28 +33,26 @@
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <div>
                 <p class="text-gray-900 whitespace-no-wrap">{{ request.address }}</p>
+                <p class="text-gray-600 whitespace-no-wrap">{{ request.additionalNotes }}</p>
               </div>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <div class="flex flex-wrap gap-1">
-                  <span *ngFor="let waste of request.wasteTypes"
-                        class="bg-primary-light text-primary-dark px-2 py-1 rounded-full text-xs">
-                    {{ waste }}
-                  </span>
+              <div *ngFor="let item of request.wasteItems">
+                <p class="text-gray-900 whitespace-no-wrap">{{ item.type }}</p>
               </div>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-gray-900 whitespace-no-wrap">{{ request.estimatedWeight }} kg</p>
+              <p class="text-gray-900 whitespace-no-wrap">{{ getTotalWeight(request.wasteItems) }} kg</p>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <p class="text-gray-900 whitespace-no-wrap">{{ request.preferredDate }}</p>
               <p class="text-gray-600 whitespace-no-wrap">{{ request.preferredTimeSlot }}</p>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                <span class="relative inline-block px-3 py-1 font-semibold text-warning-900 leading-tight">
-                  <span class="absolute inset-0 bg-warning opacity-10 rounded-full"></span>
-                  <span class="relative">{{ request.status }}</span>
-                </span>
+              <span class="relative inline-block px-3 py-1 font-semibold text-warning-900 leading-tight">
+                <span class="absolute inset-0 bg-warning opacity-10 rounded-full"></span>
+                <span class="relative">{{ request.status }}</span>
+              </span>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
               <app-action-menu
@@ -62,7 +60,6 @@
                 (delete)="request.id ? onDelete(request.id) : null">
               </app-action-menu>
             </td>
-
           </tr>
           </tbody>
         </table>

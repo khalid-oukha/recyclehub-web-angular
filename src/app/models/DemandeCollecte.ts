@@ -1,15 +1,15 @@
 import {RequestStatus} from "./RequestStatus";
-import {WasteType} from "./WasteType";
+import {WasteItem} from "./WasteItem";
 
 export interface CollectionRequest {
   id?: number;
   userId: number;
-  wasteTypes: WasteType[];
+  wasteItems: WasteItem[];
   photos?: string[];
-  estimatedWeight: number;
   address: string;
   preferredDate: string;
   preferredTimeSlot: string;
   additionalNotes?: string;
   status: RequestStatus;
+  totalPoints?: number;
 }

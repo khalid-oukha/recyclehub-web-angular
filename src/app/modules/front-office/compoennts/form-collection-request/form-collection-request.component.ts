@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CollectionRequest} from '../../../../models/DemandeCollecte';
 import {CollectionRequestService} from '../../../../core/services/collection-request.service';
 import {AuthService} from '../../../../core/services/auth.service';
@@ -24,7 +24,7 @@ export class FormCollectionRequestComponent implements OnInit {
   };
   timeSlots = ['09:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00'];
   selectedFiles: File[] = [];
-  maxWeight = 10000;
+  maxTotalWeight = 10;
   maxRequests = 3;
   currentRequests: CollectionRequest[] = [];
   currentPendingRequestsCount = 0;
@@ -49,14 +49,34 @@ export class FormCollectionRequestComponent implements OnInit {
 
   private initializeForm(): void {
     this.requestForm = this.fb.group({
-      wasteTypes: [[], Validators.required],
-      estimatedWeight: [null, [Validators.required, Validators.min(1000), Validators.max(this.maxWeight)]],
+      wasteItems: this.fb.array([]),
       address: ['', Validators.required],
       preferredDate: ['', Validators.required],
       preferredTimeSlot: ['', Validators.required],
       additionalNotes: [''],
       photos: [[]]
     });
+  }
+
+  get wasteItemsControls() {
+    return (this.requestForm.get('wasteItems') as FormArray).controls;
+  }
+
+  addWasteItem(): void {
+    const wasteItemForm = this.fb.group({
+      type: ['', Validators.required],
+      weight: [null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.maxTotalWeight)
+      ]]
+    });
+
+    (this.requestForm.get('wasteItems') as FormArray).push(wasteItemForm);
+  }
+
+  removeWasteItem(index: number): void {
+    (this.requestForm.get('wasteItems') as FormArray).removeAt(index);
   }
 
   private fetchCurrentRequests(): void {
@@ -82,7 +102,7 @@ export class FormCollectionRequestComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.requestForm.valid && this.currentPendingRequestsCount < this.maxRequests) {
+    if (this.requestForm.valid && this.validateTotalWeight() && this.currentPendingRequestsCount < this.maxRequests) {
       const newRequest: CollectionRequest = this.createRequest();
       this.collectionRequestService.create(newRequest).subscribe({
         next: () => this.handleRequestSuccess(),
@@ -95,12 +115,28 @@ export class FormCollectionRequestComponent implements OnInit {
     }
   }
 
+  private validateTotalWeight(): boolean {
+    const wasteItems = this.requestForm.get('wasteItems') as FormArray;
+    const totalWeight = wasteItems.controls.reduce(
+      (sum, control) => sum + (control.get('weight')?.value || 0), 0
+    );
+    return totalWeight > 0 && totalWeight <= this.maxTotalWeight;
+  }
+
   private createRequest(): CollectionRequest {
+    const wasteItems = (this.requestForm.get('wasteItems') as FormArray).controls.map(control => ({
+      type: control.get('type')?.value ?? '',
+      weight: control.get('weight')?.value ?? 0,
+      points: this.calculatePoints(
+        control.get('type')?.value ?? '',
+        control.get('weight')?.value ?? 0
+      )
+    }));
+
     return {
       userId: this.currentUser?.id ?? 0,
-      wasteTypes: this.requestForm.value.wasteTypes,
+      wasteItems,
       photos: this.selectedFiles.map((file) => file.name),
-      estimatedWeight: this.requestForm.value.estimatedWeight,
       address: this.requestForm.value.address,
       preferredDate: this.requestForm.value.preferredDate,
       preferredTimeSlot: this.requestForm.value.preferredTimeSlot,
@@ -108,6 +144,17 @@ export class FormCollectionRequestComponent implements OnInit {
       status: RequestStatus.PENDING
     };
   }
+
+  private calculatePoints(type: WasteType, weight: number): number {
+    const pointsMap = {
+      [WasteType.PLASTIC]: 2,
+      [WasteType.GLASS]: 1,
+      [WasteType.PAPER]: 1,
+      [WasteType.METAL]: 5
+    };
+    return Math.round(weight * pointsMap[type]);
+  }
+
 
   private handleRequestSuccess(): void {
     console.log('Request created successfully');

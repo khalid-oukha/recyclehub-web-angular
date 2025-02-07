@@ -6,7 +6,7 @@ import {AuthService} from "../../../../core/services/auth.service";
 @Component({
   selector: 'app-request-view',
   templateUrl: './request-view.component.html',
-  styleUrl: './request-view.component.scss'
+  styleUrls: ['./request-view.component.scss']
 })
 export class RequestViewComponent implements OnInit {
   collectionRequests: CollectionRequest[] = [];
@@ -29,6 +29,10 @@ export class RequestViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  getTotalWeight(wasteItems: any[]): number {
+    return wasteItems.reduce((total, item) => total + item.weight, 0);
   }
 
   onEdit(id: number): void {
