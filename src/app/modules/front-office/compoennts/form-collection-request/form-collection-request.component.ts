@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {WasteType} from "../../../../models/WasteType";
-import {RequestStatus} from "../../../../models/RequestStatus";
-import {CollectionRequest} from "../../../../models/DemandeCollecte";
-import {CollectionRequestService} from "../../../../core/services/collection-request.service";
-import {AuthService} from "../../../../core/services/auth.service";
-import {User} from "../../../../models/User";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CollectionRequest} from '../../../../models/DemandeCollecte';
+import {CollectionRequestService} from '../../../../core/services/collection-request.service';
+import {AuthService} from '../../../../core/services/auth.service';
+import {RequestStatus} from '../../../../models/RequestStatus';
+import {User} from '../../../../models/User';
+import {WasteType} from '../../../../models/WasteType';
 
 @Component({
   selector: 'app-form-collection-request',
@@ -16,6 +16,13 @@ export class FormCollectionRequestComponent implements OnInit {
   currentUser: User | null = null;
   requestForm!: FormGroup;
   wasteTypeValues = Object.values(WasteType);
+  wasteTypeLabels: { [key in WasteType]: string } = {
+    [WasteType.PLASTIC]: 'PLASTIC',
+    [WasteType.GLASS]: 'GLASS',
+    [WasteType.PAPER]: 'PAPER',
+    [WasteType.METAL]: 'METAL'
+  };
+  timeSlots = ['09:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00'];
   selectedFiles: File[] = [];
   maxWeight = 10000;
   maxRequests = 3;
