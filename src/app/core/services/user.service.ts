@@ -1,8 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
-import {Router} from "@angular/router";
-import {User} from "../../models/User";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../../models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +9,7 @@ import {User} from "../../models/User";
 export class UserService {
   private apiUrl = '/users';
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  constructor(private http: HttpClient) {}
 
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${userId}`);
@@ -21,15 +19,7 @@ export class UserService {
     return this.http.patch<User>(`${this.apiUrl}/${userId}`, updatedUserData);
   }
 
-  deleteAccount(): Observable<void> {
-    const storedUser = localStorage.getItem('currentUser');
-    const currentUser = storedUser ? JSON.parse(storedUser) : null;
-
-    return this.http.delete<void>(`${this.apiUrl}/${currentUser.id}`).pipe(
-      tap(() => {
-        localStorage.removeItem('currentUser');
-        this.router.navigate(['/']);
-      })
-    );
+  deleteAccount(userId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${userId}`);
   }
 }

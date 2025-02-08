@@ -6,6 +6,10 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiUrlInterceptor} from "./core/interceptors/api-url.interceptor";
 import {SharedModule} from "./shared/shared.module";
+import {StoreModule} from "@ngrx/store";
+import {userReducer} from "./store/user/user.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {UserEffects} from "./store/user/user.effects";
 
 @NgModule({
   declarations: [
@@ -15,7 +19,9 @@ import {SharedModule} from "./shared/shared.module";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forRoot({ user: userReducer }),
+    EffectsModule.forRoot([UserEffects]),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ApiUrlInterceptor, multi: true},

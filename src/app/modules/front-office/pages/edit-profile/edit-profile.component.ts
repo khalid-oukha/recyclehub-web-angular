@@ -1,25 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {AuthService} from "../../../../core/services/auth.service";
-import {UserService} from "../../../../core/services/user.service";
-import {User} from "../../../../models/User";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { User } from '../../../../models/User';
+import { updateUserRequest } from '../../../../store/user/user.actions';
+import { selectCurrentUser, selectLoading, selectError } from '../../../../store/user/user.selectors';
+import {AppState} from "../../../../store/app.state";
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrl: './edit-profile.component.scss'
+  styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
   editProfileForm!: FormGroup;
-  currentUser: User | null = null;
-  isSubmitting = false;
+  currentUser$: Observable<User | null>;
+  isSubmitting$: Observable<boolean>;
   updateSuccess = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private userService: UserService
+    private store: Store<AppState>
   ) {
+    this.currentUser$ = this.store.select(selectCurrentUser);
+    this.isSubmitting$ = this.store.select(selectLoading);
   }
 
   ngOnInit(): void {
@@ -44,45 +48,31 @@ export class EditProfileComponent implements OnInit {
   }
 
   loadUserData(): void {
-    this.authService.getUserDetails().subscribe({
-      next: (user) => {
-        if (user) {
-          this.currentUser = user;
-          const formValue = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
-            birthday: user.birthday ? new Date(user.birthday).toISOString().split('T')[0] : '',
-            password: '',
-            address: {
-              street: user.address?.street || '',
-              city: user.address?.city || '',
-              postalCode: user.address?.postalCode || ''
-            }
-          };
-
-          this.editProfileForm.patchValue(formValue);
-        }
-      },
-      error: (error) => {
-        console.error('Error loading user data:', error);
+    this.currentUser$.subscribe((user) => {
+      if (user) {
+        const formValue = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phone: user.phone,
+          birthday: user.birthday ? new Date(user.birthday).toISOString().split('T')[0] : '',
+          password: '',
+          address: {
+            street: user.address?.street || '',
+            city: user.address?.city || '',
+            postalCode: user.address?.postalCode || ''
+          }
+        };
+        this.editProfileForm.patchValue(formValue);
       }
     });
   }
 
   onUpdateProfile(): void {
-    if (!this.currentUser) {
-      return;
-    }
-
-    this.isSubmitting = true;
     this.updateSuccess = false;
 
     const formValue = this.editProfileForm.value;
-
-    const updatedUserData: Partial<User> = {
-      ...this.currentUser,
+    let updatedUserData: Partial<User> = {
       ...formValue,
       address: {
         street: formValue.address.street,
@@ -95,14 +85,19 @@ export class EditProfileComponent implements OnInit {
       delete updatedUserData.password;
     }
 
-    this.userService.updateUser(this.currentUser.id, updatedUserData).subscribe({
-      next: (updatedUser) => {
-        this.authService.updateCurrentUser(updatedUser);
+    // Dispatch NgRx action to update user
+    this.store.dispatch(updateUserRequest({
+      userId: 'currentUserId', // Replace with actual user ID from store
+      updatedUserData
+    }));
+
+    // Optional: Reset form after success
+    this.store.select(selectCurrentUser).subscribe((user) => {
+      if (user) {
+        this.editProfileForm.patchValue({
+          password: '' // Clear password field
+        });
         this.updateSuccess = true;
-        this.isSubmitting = false;
-      },
-      error: (error) => {
-        this.isSubmitting = false;
       }
     });
   }
