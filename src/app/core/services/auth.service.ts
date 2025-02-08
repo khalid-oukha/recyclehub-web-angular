@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {User} from '../../models/User';
-import {BehaviorSubject, map, Observable, of, switchMap, tap} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../../models/User';
+import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnInit {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -23,15 +23,27 @@ export class AuthService {
       .get<User[]>(`/users?email=${credentials.email}&password=${credentials.password}`)
       .pipe(
         map((users) => {
-          if (users.length === 1) return users[0];
+          if (users.length === 1) {
+            return users[0];
+          }
           throw new Error('Invalid credentials');
         }),
         tap((user) => {
+          console.log('Logged in user:', user);
+          console.log('Is Collector:', user.isCollector);
+
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
+
+          if (user.isCollector) {
+            this.router.navigate(['/collector']);
+          } else {
+            this.router.navigate(['/profile']);
+          }
         })
       );
   }
+
 
   logout(): void {
     localStorage.removeItem('currentUser');
@@ -44,8 +56,16 @@ export class AuthService {
   }
 
   getUserDetails(): Observable<User | null> {
-    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    return of(user);
+    const userId = this.currentUserSubject.value?.id;
+    if (userId) {
+      return this.http.get<User>(`/users/${userId}`).pipe(
+        tap((user) => {
+
+          this.updateCurrentUser(user);
+        })
+      );
+    }
+    return of(null);
   }
 
   signUp(user: Omit<User, 'id' | 'points' | 'profilePhoto'>, profilePhoto?: File): Observable<User> {
@@ -77,5 +97,17 @@ export class AuthService {
   updateCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
+  }
+
+  ngOnInit(): void {
+    if (this.currentUserSubject.value) {
+      this.getUserDetails().subscribe();
+    }
+  }
+
+  isCollector(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map(user => !!user?.isCollector)
+    );
   }
 }

@@ -30,8 +30,11 @@
             <td class="px-3 py-2 text-xs">{{ request.id }}</td>
             <td class="px-3 py-2 text-xs">{{ request.userId }}</td>
             <td class="px-3 py-2 text-xs">
-              <p class="text-gray-700">{{ request.address }}</p>
+              <p class="text-gray-700">{{ request.address.city }}</p>
+              <p class="text-gray-700">{{ request.address.street }}</p>
+              <p class="text-gray-700">{{ request.address.postalCode }}</p>
             </td>
+
             <td class="px-3 py-2 text-xs">
               <div *ngFor="let item of request.wasteItems">
                 <p class="text-gray-700">{{ item.type }} ({{ item.weight }} kg)</p></div>

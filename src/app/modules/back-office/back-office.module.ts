@@ -18,7 +18,7 @@ import {FormsModule} from "@angular/forms";
         BackOfficeRoutingModule,
         SharedModule,
         FormsModule
-    ]
+    ],
 })
 export class BackOfficeModule {
 }

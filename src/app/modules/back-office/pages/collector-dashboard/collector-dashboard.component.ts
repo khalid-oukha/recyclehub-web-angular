@@ -4,6 +4,7 @@ import {CollectionRequestService} from "../../../../core/services/collection-req
 import {RequestStatus} from "../../../../models/RequestStatus";
 import {switchMap} from "rxjs";
 import {UserService} from "../../../../core/services/user.service";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-collector-dashboard',
@@ -14,23 +15,36 @@ export class CollectorDashboardComponent implements OnInit {
   collectionRequests: CollectionRequest[] = [];
   filteredRequests: CollectionRequest[] = [];
   selectedStatus: string = '';
+  currentUserCity: string = '';
 
   constructor(
     private collectionRequestService: CollectionRequestService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
-    this.fetchRequests();
+    this.authService.currentUser$.subscribe(user => {
+      if (user && user.address) {
+        this.currentUserCity = user.address.city;
+        this.fetchRequests();
+      } else {
+        console.error('User address is missing.');
+      }
+    });
   }
+
 
   fetchRequests(): void {
     this.collectionRequestService.getAll().subscribe((requests) => {
-      this.collectionRequests = requests;
-      this.filteredRequests = [...requests];
+      this.collectionRequests = requests.filter(
+        (request) => request.address?.city?.trim().toLowerCase() === this.currentUserCity.trim().toLowerCase()
+      );
+      this.filteredRequests = [...this.collectionRequests];
     });
   }
+
 
   filterByStatus(): void {
     if (this.selectedStatus) {

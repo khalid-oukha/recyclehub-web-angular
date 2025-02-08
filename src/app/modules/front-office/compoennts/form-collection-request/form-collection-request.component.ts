@@ -50,7 +50,9 @@ export class FormCollectionRequestComponent implements OnInit {
   private initializeForm(): void {
     this.requestForm = this.fb.group({
       wasteItems: this.fb.array([]),
-      address: ['', Validators.required],
+      streetAddress: ['', Validators.required],
+      city: ['', Validators.required],
+      postalCode: ['', Validators.required],
       preferredDate: ['', Validators.required],
       preferredTimeSlot: ['', Validators.required],
       additionalNotes: [''],
@@ -137,7 +139,11 @@ export class FormCollectionRequestComponent implements OnInit {
       userId: this.currentUser?.id ?? '',
       wasteItems,
       photos: this.selectedFiles.map((file) => file.name),
-      address: this.requestForm.value.address,
+      address: {
+        street: this.requestForm.value.streetAddress,
+        city: this.requestForm.value.city,
+        postalCode: this.requestForm.value.postalCode
+      },
       preferredDate: this.requestForm.value.preferredDate,
       preferredTimeSlot: this.requestForm.value.preferredTimeSlot,
       additionalNotes: this.requestForm.value.additionalNotes || '',

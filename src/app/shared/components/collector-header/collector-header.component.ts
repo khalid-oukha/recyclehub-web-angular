@@ -17,9 +17,8 @@ export class CollectorHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authSubscription = this.authService.currentUser$.pipe(
-      tap(user => console.log('Current user:', user))
-    ).subscribe(user => {
+    this.authSubscription = this.authService.currentUser$
+      .subscribe(user => {
       this.isAuthenticated = !!user;
     });
   }

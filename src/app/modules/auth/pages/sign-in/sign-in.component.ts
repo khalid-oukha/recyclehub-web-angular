@@ -26,8 +26,6 @@ export class SignInComponent {
     if (this.loginForm.invalid) return;
 
     const credentials = this.loginForm.value;
-    this.authService.login(credentials).subscribe((user) => {
-      this.router.navigate(['/profile']);
-    });
+    this.authService.login(credentials).subscribe();
   }
 }

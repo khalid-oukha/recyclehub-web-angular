@@ -5,15 +5,14 @@ import {isLoggedInGuard} from "./core/guards/isLogged-in.guard";
 
 const routes: Routes = [
   {
-    path: 'auth',
-    loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
-    , canMatch: [isLoggedInGuard]
-  },
-
-  {
     path: 'collector',
     loadChildren: () => import('./modules/back-office/back-office.module').then(m => m.BackOfficeModule)
     , canMatch: [authGuard]
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+    , canMatch: [isLoggedInGuard]
   },
 
   {
