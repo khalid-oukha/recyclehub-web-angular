@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, Observable, tap, throwError} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../../models/User";
 
@@ -13,13 +13,12 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) {
   }
 
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${userId}`);
+  }
 
   updateUser(userId: string, updatedUserData: Partial<User>): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${userId}`, updatedUserData).pipe(
-      catchError(error => {
-        return throwError(() => new Error('Failed to update user'));
-      })
-    );
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, updatedUserData);
   }
 
   deleteAccount(): Observable<void> {
@@ -30,12 +29,7 @@ export class UserService {
       tap(() => {
         localStorage.removeItem('currentUser');
         this.router.navigate(['/']);
-      }),
-      catchError(error => {
-        return throwError(() => new Error('Failed to delete user'));
       })
     );
   }
-
-
 }

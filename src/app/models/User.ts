@@ -10,8 +10,8 @@ export interface User {
     postalCode: string;
   };
   phone: string;
-  birthday: Date;
+  birthday: string;
   profilePhoto?: string;
   isCollector: boolean;
-  points: number;
+  totalPoints?: number;
 }

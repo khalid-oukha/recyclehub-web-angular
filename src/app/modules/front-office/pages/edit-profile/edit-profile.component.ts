@@ -102,7 +102,6 @@ export class EditProfileComponent implements OnInit {
         this.isSubmitting = false;
       },
       error: (error) => {
-        console.error('Error updating profile:', error);
         this.isSubmitting = false;
       }
     });

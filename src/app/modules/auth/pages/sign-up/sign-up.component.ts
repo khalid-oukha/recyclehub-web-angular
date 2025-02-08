@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../../core/services/auth.service';
 import {Router} from '@angular/router';
-import {User} from "../../../../models/User";
 
 @Component({
   selector: 'app-sign-up',
@@ -10,10 +9,8 @@ import {User} from "../../../../models/User";
   styleUrl: './sign-up.component.scss'
 })
 export class SignUpComponent {
-  signupForm!: FormGroup;
-  errorMessage: string = '';
+  signupForm: FormGroup;
   selectedFile: File | undefined;
-  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -30,7 +27,7 @@ export class SignUpComponent {
       postalCode: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       birthday: ['', Validators.required],
-      isCollector: [false]
+      isCollector: [false],
     });
   }
 
@@ -39,15 +36,10 @@ export class SignUpComponent {
   }
 
   onSubmit() {
-    if (this.signupForm.invalid) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.errorMessage = '';
+    if (this.signupForm.invalid) return;
 
     const formData = this.signupForm.value;
-    const user: Omit<User, 'id' | 'points' | 'profilePhoto'> = {
+    const user = {
       email: formData.email,
       password: formData.password,
       firstName: formData.firstName,
@@ -55,23 +47,15 @@ export class SignUpComponent {
       address: {
         street: formData.street,
         city: formData.city,
-        postalCode: formData.postalCode
+        postalCode: formData.postalCode,
       },
       phone: formData.phone,
       birthday: formData.birthday,
-      isCollector: formData.isCollector
+      isCollector: formData.isCollector,
     };
 
-    this.authService.signUp(user, this.selectedFile).subscribe({
-      next: (newUser: User) => {
-        this.isLoading = false;
-        this.router.navigate(['/auth/sign-in']).then(r => {
-        });
-      },
-      error: (error: any) => {
-        this.errorMessage = error.message || 'An error occurred during signup.';
-        console.error('Signup error:', error);
-      }
+    this.authService.signUp(user, this.selectedFile).subscribe(() => {
+      this.router.navigate(['/auth/sign-in']);
     });
   }
 }
