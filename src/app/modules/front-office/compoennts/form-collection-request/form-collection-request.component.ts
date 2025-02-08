@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CollectionRequest} from '../../../../models/DemandeCollecte';
-import {CollectionRequestService} from '../../../../core/services/collection-request.service';
-import {AuthService} from '../../../../core/services/auth.service';
-import {RequestStatus} from '../../../../models/RequestStatus';
-import {User} from '../../../../models/User';
-import {WasteType} from '../../../../models/WasteType';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { CollectionRequest } from '../../../../models/DemandeCollecte';
+import { CollectionRequestService } from '../../../../core/services/collection-request.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { RequestStatus } from '../../../../models/RequestStatus';
+import { User } from '../../../../models/User';
+import { WasteType } from '../../../../models/WasteType';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-form-collection-request',
   templateUrl: './form-collection-request.component.html',
-  styleUrl: './form-collection-request.component.scss'
+  styleUrls: ['./form-collection-request.component.scss']
 })
 export class FormCollectionRequestComponent implements OnInit {
   currentUser: User | null = null;
@@ -32,9 +33,9 @@ export class FormCollectionRequestComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private collectionRequestService: CollectionRequestService,
-    private authService: AuthService
-  ) {
-  }
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -49,7 +50,7 @@ export class FormCollectionRequestComponent implements OnInit {
 
   private initializeForm(): void {
     this.requestForm = this.fb.group({
-      wasteItems: this.fb.array([]),
+      wasteItems: this.fb.array([], [this.uniqueWasteTypeValidator]),
       streetAddress: ['', Validators.required],
       city: ['', Validators.required],
       postalCode: ['', Validators.required],
@@ -79,6 +80,30 @@ export class FormCollectionRequestComponent implements OnInit {
 
   removeWasteItem(index: number): void {
     (this.requestForm.get('wasteItems') as FormArray).removeAt(index);
+  }
+
+  private uniqueWasteTypeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const wasteItems = control as FormArray;
+    const types = wasteItems.controls.map(item => item.get('type')?.value);
+    const hasDuplicates = new Set(types).size !== types.length;
+    return hasDuplicates ? { duplicateWasteType: true } : null;
+  }
+
+  getSelectedWasteTypes(): WasteType[] {
+    return (this.requestForm.get('wasteItems') as FormArray).controls
+      .map(control => control.get('type')?.value)
+      .filter(type => type);
+  }
+
+  isWasteTypeSelected(type: any): boolean {
+    return this.getSelectedWasteTypes().includes(type);
+  }
+
+  getTotalWeight(): number {
+    const wasteItems = this.requestForm.get('wasteItems') as FormArray;
+    return wasteItems.controls.reduce(
+      (sum, control) => sum + (control.get('weight')?.value || 0), 0
+    );
   }
 
   private fetchCurrentRequests(): void {
@@ -118,10 +143,7 @@ export class FormCollectionRequestComponent implements OnInit {
   }
 
   private validateTotalWeight(): boolean {
-    const wasteItems = this.requestForm.get('wasteItems') as FormArray;
-    const totalWeight = wasteItems.controls.reduce(
-      (sum, control) => sum + (control.get('weight')?.value || 0), 0
-    );
+    const totalWeight = this.getTotalWeight();
     return totalWeight > 0 && totalWeight <= this.maxTotalWeight;
   }
 
@@ -161,13 +183,12 @@ export class FormCollectionRequestComponent implements OnInit {
     return Math.round(weight * pointsMap[type]);
   }
 
-
   private handleRequestSuccess(): void {
-    console.log('Request created successfully');
     this.requestForm.reset();
     this.selectedFiles = [];
     this.fetchCurrentRequests();
     this.fetchPendingRequestsCount();
+    this.router.navigate(['/request/view']);
   }
 
   private handleRequestError(): void {

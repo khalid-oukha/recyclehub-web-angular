@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {CollectionRequest} from "../../../../models/DemandeCollecte";
-import {CollectionRequestService} from "../../../../core/services/collection-request.service";
-import {RequestStatus} from "../../../../models/RequestStatus";
-import {switchMap} from "rxjs";
-import {UserService} from "../../../../core/services/user.service";
-import {AuthService} from "../../../../core/services/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { CollectionRequest } from "../../../../models/DemandeCollecte";
+import { CollectionRequestService } from "../../../../core/services/collection-request.service";
+import { RequestStatus } from "../../../../models/RequestStatus";
+import { switchMap } from "rxjs";
+import { UserService } from "../../../../core/services/user.service";
+import { AuthService } from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-collector-dashboard',
   templateUrl: './collector-dashboard.component.html',
-  styleUrl: './collector-dashboard.component.scss'
+  styleUrls: ['./collector-dashboard.component.scss']
 })
 export class CollectorDashboardComponent implements OnInit {
   collectionRequests: CollectionRequest[] = [];
@@ -21,8 +21,7 @@ export class CollectorDashboardComponent implements OnInit {
     private collectionRequestService: CollectionRequestService,
     private userService: UserService,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -35,7 +34,6 @@ export class CollectorDashboardComponent implements OnInit {
     });
   }
 
-
   fetchRequests(): void {
     this.collectionRequestService.getAll().subscribe((requests) => {
       this.collectionRequests = requests.filter(
@@ -44,7 +42,6 @@ export class CollectorDashboardComponent implements OnInit {
       this.filteredRequests = [...this.collectionRequests];
     });
   }
-
 
   filterByStatus(): void {
     if (this.selectedStatus) {
@@ -56,11 +53,15 @@ export class CollectorDashboardComponent implements OnInit {
     }
   }
 
+  isPending(request: CollectionRequest): boolean {
+    return request.status === RequestStatus.PENDING;
+  }
+
   onAccept(requestId: string | undefined) {
     if (!requestId) return;
 
     const request = this.collectionRequests.find((r) => r.id === requestId);
-    if (!request) return;
+    if (!request || !this.isPending(request)) return;
 
     const totalPoints = request.wasteItems.reduce((sum, item) => sum + (item.points || 0), 0);
 
@@ -72,7 +73,7 @@ export class CollectorDashboardComponent implements OnInit {
       .pipe(
         switchMap((updatedRequest) => this.userService.getUserById(updatedRequest.userId)),
         switchMap((user) =>
-          this.userService.updateUser(user.id, {totalPoints: (user.totalPoints || 0) + totalPoints})
+          this.userService.updateUser(user.id, { totalPoints: (user.totalPoints || 0) + totalPoints })
         )
       )
       .subscribe(() => {
@@ -88,10 +89,10 @@ export class CollectorDashboardComponent implements OnInit {
     if (!requestId) return;
 
     const request = this.collectionRequests.find((r) => r.id === requestId);
-    if (!request) return;
+    if (!request || !this.isPending(request)) return;
 
     this.collectionRequestService
-      .updateRequest(requestId, {status: RequestStatus.REJECTED})
+      .updateRequest(requestId, { status: RequestStatus.REJECTED })
       .subscribe((updatedRequest) => {
         const index = this.collectionRequests.findIndex((r) => r.id === updatedRequest.id);
         if (index > -1) {
@@ -112,6 +113,4 @@ export class CollectorDashboardComponent implements OnInit {
   onDelete(id: string) {
     return null;
   }
-
-
 }

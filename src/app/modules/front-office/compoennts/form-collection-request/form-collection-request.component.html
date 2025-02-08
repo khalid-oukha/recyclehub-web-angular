@@ -8,10 +8,13 @@
                [formGroupName]="i" class="grid grid-cols-3 gap-4">
             <select formControlName="type" class="col-span-1 px-3 py-2 border rounded">
               <option value="">Select Waste Type</option>
-              <option *ngFor="let type of wasteTypeValues" [value]="type">
+              <option *ngFor="let type of wasteTypeValues" [value]="type" [disabled]="isWasteTypeSelected(type)">
                 {{ wasteTypeLabels[type] }}
               </option>
             </select>
+            <div *ngIf="item.get('type')?.invalid && item.get('type')?.touched" class="text-red-500 text-xs">
+              Please select a waste type
+            </div>
 
             <input
               type="number"
@@ -30,7 +33,16 @@
             >
               Remove
             </button>
+
+            <div *ngIf="item.get('weight')?.invalid && item.get('weight')?.touched" class="text-red-500 text-xs">
+              Please enter a valid weight (1-10 kg)
+            </div>
           </div>
+        </div>
+
+        <!-- Total Weight Validation Message -->
+        <div *ngIf="getTotalWeight() > maxTotalWeight" class="text-red-500 text-xs">
+          The total weight of all waste items must not exceed {{ maxTotalWeight }} kg.
         </div>
 
         <!-- Add Waste Item Button -->
@@ -44,39 +56,38 @@
 
         <!-- Input Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Address Fields -->
-            <div class="space-y-6">
-              <div class="relative">
-                <input formControlName="streetAddress" type="text"
-                       class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
-                       placeholder="Street Address"/>
-                <div *ngIf="requestForm.get('streetAddress')?.invalid && requestForm.get('streetAddress')?.touched"
-                     class="absolute left-0 text-red-500 text-xs mt-1">
-                  Please enter a valid street address
-                </div>
-              </div>
-
-              <div class="relative">
-                <input formControlName="city" type="text"
-                       class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
-                       placeholder="City"/>
-                <div *ngIf="requestForm.get('city')?.invalid && requestForm.get('city')?.touched"
-                     class="absolute left-0 text-red-500 text-xs mt-1">
-                  Please enter a city
-                </div>
-              </div>
-
-              <div class="relative">
-                <input formControlName="postalCode" type="text"
-                       class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
-                       placeholder="Postal Code"/>
-                <div *ngIf="requestForm.get('postalCode')?.invalid && requestForm.get('postalCode')?.touched"
-                     class="absolute left-0 text-red-500 text-xs mt-1">
-                  Please enter a postal code
-                </div>
+          <!-- Address Fields -->
+          <div class="space-y-6">
+            <div class="relative">
+              <input formControlName="streetAddress" type="text"
+                     class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                     placeholder="Street Address"/>
+              <div *ngIf="requestForm.get('streetAddress')?.invalid && requestForm.get('streetAddress')?.touched"
+                   class="absolute left-0 text-red-500 text-xs mt-1">
+                Please enter a valid street address
               </div>
             </div>
 
+            <div class="relative">
+              <input formControlName="city" type="text"
+                     class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                     placeholder="City"/>
+              <div *ngIf="requestForm.get('city')?.invalid && requestForm.get('city')?.touched"
+                   class="absolute left-0 text-red-500 text-xs mt-1">
+                Please enter a city
+              </div>
+            </div>
+
+            <div class="relative">
+              <input formControlName="postalCode" type="text"
+                     class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                     placeholder="Postal Code"/>
+              <div *ngIf="requestForm.get('postalCode')?.invalid && requestForm.get('postalCode')?.touched"
+                   class="absolute left-0 text-red-500 text-xs mt-1">
+                Please enter a postal code
+              </div>
+            </div>
+          </div>
 
           <!-- Date & Time -->
           <div class="space-y-6">

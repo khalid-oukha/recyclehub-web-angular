@@ -37,7 +37,8 @@
 
             <td class="px-3 py-2 text-xs">
               <div *ngFor="let item of request.wasteItems">
-                <p class="text-gray-700">{{ item.type }} ({{ item.weight }} kg)</p></div>
+                <p class="text-gray-700">{{ item.type }} ({{ item.weight }} kg)</p>
+              </div>
             </td>
             <td class="px-3 py-2 text-xs">
               <p class="text-gray-700">{{ getTotalWeight(request.wasteItems) }} kg</p>
@@ -55,8 +56,9 @@
 
             <td class="px-3 py-2 text-xs">
               <div class="flex items-center gap-2">
-                <!-- Accept Button -->
+                <!-- Accept Button (Only for PENDING requests) -->
                 <button
+                  *ngIf="isPending(request)"
                   (click)="onAccept(request.id)"
                   class="p-1 rounded-full bg-green-100 hover:bg-green-200 transition-colors"
                   title="Accept Request"
@@ -66,8 +68,9 @@
                   </svg>
                 </button>
 
-                <!-- Reject Button -->
+                <!-- Reject Button (Only for PENDING requests) -->
                 <button
+                  *ngIf="isPending(request)"
                   (click)="onReject(request.id)"
                   class="p-1 rounded-full bg-red-100 hover:bg-red-200 transition-colors"
                   title="Reject Request"
@@ -84,7 +87,6 @@
                 </app-action-menu>
               </div>
             </td>
-
           </tr>
           </tbody>
         </table>
