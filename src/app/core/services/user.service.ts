@@ -20,6 +20,7 @@ export class UserService {
   }
 
   deleteAccount(userId: string): Observable<void> {
+    localStorage.removeItem('currentUser');
     return this.http.delete<void>(`${this.apiUrl}/${userId}`);
   }
 }

@@ -14,7 +14,6 @@ export class UserEffects {
     private router: Router
   ) {}
 
-  // Load User Effect
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.loadUserRequest),

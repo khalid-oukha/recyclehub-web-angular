@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import {Observable, take} from 'rxjs';
 import { User } from '../../../../models/User';
+import { UserService } from '../../../../core/services/user.service';
+import { selectCurrentUser } from '../../../../store/user/user.selectors'; // Import the selector
+import { AppState } from '../../../../store/app.state'; // Import the AppState
 import { updateUserRequest } from '../../../../store/user/user.actions';
-import { selectCurrentUser, selectLoading, selectError } from '../../../../store/user/user.selectors';
-import {AppState} from "../../../../store/app.state";
+import {Router} from "@angular/router"; // Import the action
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,16 +17,17 @@ import {AppState} from "../../../../store/app.state";
 export class EditProfileComponent implements OnInit {
   editProfileForm!: FormGroup;
   currentUser$: Observable<User | null>;
-  isSubmitting$: Observable<boolean>;
+  isSubmitting = false;
   updateSuccess = false;
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
   ) {
     this.currentUser$ = this.store.select(selectCurrentUser);
-    this.isSubmitting$ = this.store.select(selectLoading);
   }
+
 
   ngOnInit(): void {
     this.initializeForm();
@@ -63,42 +66,42 @@ export class EditProfileComponent implements OnInit {
             postalCode: user.address?.postalCode || ''
           }
         };
+
         this.editProfileForm.patchValue(formValue);
       }
     });
   }
 
   onUpdateProfile(): void {
+    this.isSubmitting = true;
     this.updateSuccess = false;
 
-    const formValue = this.editProfileForm.value;
-    let updatedUserData: Partial<User> = {
-      ...formValue,
-      address: {
-        street: formValue.address.street,
-        city: formValue.address.city,
-        postalCode: formValue.address.postalCode
+    this.currentUser$.pipe(take(1)).subscribe((user) => {
+      if (!user) {
+        this.isSubmitting = false;
+        return;
       }
-    };
 
-    if (!formValue.password) {
-      delete updatedUserData.password;
-    }
+      const formValue = this.editProfileForm.value;
 
-    // Dispatch NgRx action to update user
-    this.store.dispatch(updateUserRequest({
-      userId: 'currentUserId', // Replace with actual user ID from store
-      updatedUserData
-    }));
+      const updatedUserData: Partial<User> = {
+        ...user,
+        ...formValue,
+        address: {
+          street: formValue.address.street,
+          city: formValue.address.city,
+          postalCode: formValue.address.postalCode
+        }
+      };
 
-    // Optional: Reset form after success
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      if (user) {
-        this.editProfileForm.patchValue({
-          password: '' // Clear password field
-        });
-        this.updateSuccess = true;
+      if (!formValue.password) {
+        delete updatedUserData.password;
       }
+
+      this.store.dispatch(updateUserRequest({
+        userId: user.id,
+        updatedUserData
+      }));
+      this.router.navigate(['/profile'])
     });
-  }
-}
+  }}

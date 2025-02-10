@@ -32,7 +32,7 @@
           <tr *ngFor="let request of collectionRequests">
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <div>
-                <p class="text-gray-900 whitespace-no-wrap">{{ request.address }}</p>
+                <p class="text-gray-900 whitespace-no-wrap"> {{currentUser?.firstName}}</p>
                 <p class="text-gray-600 whitespace-no-wrap">{{ request.additionalNotes }}</p>
               </div>
             </td>

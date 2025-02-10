@@ -3,15 +3,18 @@ import { Router } from '@angular/router';
 import { User } from '../../models/User';
 import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import {Store} from "@ngrx/store";
+import {AppState} from "../../store/app.state";
+import {loadUserSuccess} from "../../store/user/user.actions";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(    private store: Store<AppState>,private http: HttpClient, private router: Router) {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUserSubject.next(JSON.parse(storedUser));
@@ -19,22 +22,20 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<User> {
-    return this.http
-      .get<User[]>(`/users?email=${credentials.email}&password=${credentials.password}`)
-      .pipe(
-        map((users) => {
-          if (users.length === 1) {
-            return users[0];
-          }
-          throw new Error('Invalid credentials');
-        }),
-        tap((user) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.router.navigate([user.isCollector ? '/collector' : '/profile']);
-        })
-      );
+    return this.http.get<User[]>(`/users?email=${credentials.email}&password=${credentials.password}`).pipe(
+      map(users => {
+        if (!users?.length) throw new Error('Invalid credentials');
+        return users[0];
+      }),
+      tap(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        this.store.dispatch(loadUserSuccess({ user }));
+        this.router.navigate([user.isCollector ? '/collector' : '/profile']);
+      })
+    );
   }
+
 
   logout(): void {
     localStorage.removeItem('currentUser');

@@ -28,6 +28,7 @@ export class SignUpComponent {
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       birthday: ['', Validators.required],
       isCollector: [false],
+      profilePhoto: [''],
     });
   }
 

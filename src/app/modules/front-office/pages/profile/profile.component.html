@@ -46,97 +46,96 @@
         Add to Request
       </a>
     </div>
+    <!-- Conversion Section -->
+    <div class="mt-6 p-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2 bg-blue-50 rounded-lg">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800">Points Conversion</h3>
+          <p class="text-sm text-gray-500">Your balance: {{ user.totalPoints || 0 }} P</p>
+        </div>
+      </div>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-      <!-- Points Card -->
-      <div
-        class="group bg-white p-3 rounded-md border border-gray-200 hover:border-blue-200 shadow-sm hover:shadow-md transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 relative"
-      >
+      <!-- Conversion Options Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-50 opacity-0 group-hover:opacity-20 transition-opacity rounded-md"
-        ></div>
-        <div class="flex items-center gap-2 relative">
-          <div class="p-1.5 bg-blue-50 rounded-md group-hover:bg-blue-100 transition-colors">
-            <svg
-              class="w-4 h-4 text-blue-600 transform group-hover:scale-110 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+          *ngFor="let option of conversionOptions"
+          (click)="selectConversion(option)"
+          [class]="['relative p-4 rounded-lg border cursor-pointer transition-all duration-200',
+        selectedConversion === option ?
+        'border-green-200 bg-green-50 ring-1 ring-green-100' :
+        'border-gray-200 hover:border-blue-200 hover:bg-blue-50',
+        (currentUser?.totalPoints || 0) < option.points ? 'opacity-50 cursor-not-allowed' : '']"
+        >
+          <!-- Badge -->
+          <div
+            *ngIf="selectedConversion === option"
+            class="absolute -top-2 -right-2 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center"
+          >
+            ✓
           </div>
+
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-gray-700">{{ option.points }} P</span>
+              <span class="text-lg font-bold text-green-600">+{{ option.amount }} DH</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500">Rate</span>
+              <span class="text-xs font-medium text-blue-600">
+            {{ option.amount / option.points | currency:'MAD ' }}/point
+          </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected Conversion Actions -->
+      <div *ngIf="selectedConversion" class="mt-6 pt-4 border-t border-gray-100">
+        <div class="flex items-center justify-between mb-4">
           <div>
-            <p class="text-[0.8rem] text-gray-500 group-hover:text-gray-600 transition-colors">Points</p>
-            <p class="text-lg font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-              {{ user.totalPoints }} P
+            <p class="text-sm text-gray-600">Converting</p>
+            <p class="font-medium text-gray-800">
+              {{ selectedConversion.points }} P → {{ selectedConversion.amount }} DH
             </p>
           </div>
+          <button
+            (click)="selectedConversion = null"
+            class="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            ✕
+          </button>
         </div>
+
+        <button
+          (click)="convertPoints()"
+          class="w-full py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg
+             hover:from-green-600 hover:to-green-700 transition-all shadow-sm hover:shadow-md"
+        >
+          Confirm Conversion
+        </button>
       </div>
 
-      <!-- Approved Card -->
-      <div
-        class="group bg-white p-3 rounded-md border border-gray-200 hover:border-green-200 shadow-sm hover:shadow-md transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 relative"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-green-50 opacity-0 group-hover:opacity-20 transition-opacity rounded-md"
-        ></div>
-        <div class="flex items-center gap-2 relative">
-          <div class="p-1.5 bg-green-50 rounded-md group-hover:bg-green-100 transition-colors">
-            <svg
-              class="w-4 h-4 text-green-600 transform group-hover:scale-110 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <div>
-            <p class="text-[0.8rem] text-gray-500 group-hover:text-gray-600 transition-colors">Approved</p>
-            <p class="text-lg font-semibold text-gray-800 group-hover:text-green-700 transition-colors">24</p>
-          </div>
-        </div>
+      <!-- Error Message -->
+      <div *ngIf="conversionError" class="mt-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg flex items-center gap-2">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span>{{ conversionError }}</span>
       </div>
 
-      <!-- Pending Card -->
-      <div
-        class="group bg-white p-3 rounded-md border border-gray-200 hover:border-yellow-200 shadow-sm hover:shadow-md transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 relative"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-yellow-50 opacity-0 group-hover:opacity-20 transition-opacity rounded-md"
-        ></div>
-        <div class="flex items-center gap-2 relative">
-          <div class="p-1.5 bg-yellow-50 rounded-md group-hover:bg-yellow-100 transition-colors">
-            <svg
-              class="w-4 h-4 text-yellow-600 transform group-hover:scale-110 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div>
-            <p class="text-[0.8rem] text-gray-500 group-hover:text-gray-600 transition-colors">Pending</p>
-            <p class="text-lg font-semibold text-gray-800 group-hover:text-yellow-700 transition-colors">5</p>
-          </div>
+      <!-- Converted Balance -->
+      <div *ngIf="currentUser?.convertedAmount" class="mt-4 pt-4 border-t border-gray-100">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-600">Available Credit</span>
+          <span class="text-lg font-bold text-green-600">{{ currentUser.convertedAmount }} DH</span>
         </div>
       </div>
     </div>
-
     <!-- About Section -->
     <h4 class="text-md font-medium leading-3">About</h4>
     <p class="text-sm text-stone-500">

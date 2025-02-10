@@ -14,4 +14,5 @@ export interface User {
   profilePhoto?: string;
   isCollector: boolean;
   totalPoints?: number;
+  convertedAmount?: number;
 }
